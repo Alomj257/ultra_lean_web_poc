@@ -13,3 +13,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+
+
+// Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// const firebaseConfig = {
+//   apiKey: "AIzaSyA5kzARineQ4wFoum0vAhGokaadQvrabM4",
+//   authDomain: "wall-job-game.firebaseapp.com",
+//   projectId: "wall-job-game",
+//   storageBucket: "wall-job-game.firebasestorage.app",
+//   messagingSenderId: "331058335696",
+//   appId: "1:331058335696:web:3fc0ee58e5402e418b73d5"
+// };
+
+// Initialize Firebase
+// const app = initializeApp(firebaseConfig);
