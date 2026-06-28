@@ -43,10 +43,14 @@ export default function BankAlertScreen({
       <TopBar
         title={alert.label}
         timer={
-          isLead && !alreadyLocked ? (
+          !alreadyLocked ? (
             <TimerPill
               seconds={BANK_ALERT_TIMEOUT}
-              onExpire={() => lockMove("timeout")}
+              onExpire={
+                isLead
+                  ? () => lockMove("timeout")
+                  : undefined
+              }
             />
           ) : null
         }
