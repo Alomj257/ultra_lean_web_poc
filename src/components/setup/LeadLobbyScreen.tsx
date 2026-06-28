@@ -3,7 +3,8 @@
 import PhoneShell from "@/components/layout/PhoneShell";
 import Button from "@/components/ui/Button";
 import Dots from "@/components/ui/Dots";
-import FakeQR from "@/components/terminal/FakeQR";
+// import FakeQR from "@/components/terminal/FakeQR";
+import RealCrewQR from "@/components/terminal/RealCrewQR";
 import { GameSession } from "@/types/game";
 
 export default function LeadLobbyScreen({
@@ -30,7 +31,7 @@ export default function LeadLobbyScreen({
           to bring them in.
         </p>
 
-        <FakeQR />
+        <RealCrewQR crewCode={session.crewCode} />
 
         <small>CREW CODE</small>
         <b>{session.crewCode}</b>

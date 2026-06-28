@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EntryScreen from "@/components/setup/EntryScreen";
 import JoinScreen from "@/components/setup/JoinScreen";
 import GameRouter from "@/components/game/GameRouter";
@@ -17,22 +17,33 @@ export default function HomePage() {
 
   const { session } = useFirebaseSession(crewCode);
 
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (code) {
+      setCrewCode(code.toUpperCase());
+      setView("join");
+    }
+  }, []);
+
   async function createCrew() {
-  try {
-    const code = generateCode();
+    try {
+      const code = generateCode();
 
-    console.log("Creating crew:", code);
+      console.log("Creating crew:", code);
 
-    await createSession(code);
+      await createSession(code);
 
-    setCrewCode(code);
-    setRole("lead");
-    setView("game");
-  } catch (error) {
-    console.error("Create crew error:", error);
-    alert(error instanceof Error ? error.message : "Firebase error");
+      setCrewCode(code);
+      setRole("lead");
+      setView("game");
+    } catch (error) {
+      console.error("Create crew error:", error);
+      alert(error instanceof Error ? error.message : "Firebase error");
+    }
   }
-}
 
   async function joinCrew(code: string) {
     await joinSession(code);
@@ -56,6 +67,7 @@ export default function HomePage() {
       <JoinScreen
         onJoin={joinCrew}
         onBack={() => setView("entry")}
+        defaultCode={crewCode}
       />
     );
   }

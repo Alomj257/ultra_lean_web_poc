@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Scanner } from "@yudiel/react-qr-scanner";
 import PhoneShell from "@/components/layout/PhoneShell";
 import Button from "@/components/ui/Button";
 import Dots from "@/components/ui/Dots";
@@ -8,26 +9,52 @@ import Dots from "@/components/ui/Dots";
 export default function JoinScreen({
   onJoin,
   onBack,
+  defaultCode = "",
 }: {
   onJoin: (code: string) => Promise<void>;
   onBack: () => void;
+  defaultCode?: string;
 }) {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(defaultCode);
   const [error, setError] = useState("");
+  const [joining, setJoining] = useState(false);
 
-  async function submit() {
+  async function submit(joinCode?: string) {
     try {
-      const clean = code.trim().toUpperCase();
+      const clean = (joinCode || code).trim().toUpperCase();
 
       if (!clean) {
-        setError("Enter crew code.");
+        setError("Enter or scan crew code.");
         return;
       }
 
+      setJoining(true);
       await onJoin(clean);
     } catch (err) {
+      setJoining(false);
       setError(err instanceof Error ? err.message : "Unable to join.");
     }
+  }
+
+  function handleScan(result: any) {
+    if (!result || joining) return;
+
+    const rawText = result[0]?.rawValue || "";
+    if (!rawText) return;
+
+    let scannedCode = rawText;
+
+    try {
+      const url = new URL(rawText);
+      scannedCode = url.searchParams.get("code") || rawText;
+    } catch {
+      scannedCode = rawText;
+    }
+
+    scannedCode = scannedCode.trim().toUpperCase();
+
+    setCode(scannedCode);
+    submit(scannedCode);
   }
 
   return (
@@ -43,11 +70,21 @@ export default function JoinScreen({
           at your partner&apos;s code.
         </p>
 
-        <div className="scan-box" />
+        <div className="camera-box">
+          <Scanner
+            onScan={handleScan}
+            onError={() => {
+              setError("Camera permission denied or not available.");
+            }}
+            constraints={{
+              facingMode: "environment",
+            }}
+          />
+        </div>
 
         <input
           className="crew-input"
-          placeholder="CREW CODE"
+          placeholder="ENTER CREW CODE"
           value={code}
           onChange={(e) => {
             setError("");
@@ -58,8 +95,8 @@ export default function JoinScreen({
         {error && <p className="error">{error}</p>}
       </section>
 
-      <Button variant="gold" onClick={submit}>
-        JOIN MISSION
+      <Button variant="gold" onClick={() => submit()} disabled={joining}>
+        {joining ? "JOINING..." : "JOIN MISSION"}
       </Button>
 
       <Button variant="ghost" onClick={onBack}>

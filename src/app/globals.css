@@ -518,3 +518,29 @@ input {
   display: grid;
   place-items: center;
 }
+
+.real-qr {
+  width: 220px;
+  height: 220px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 20px auto;
+  display: block;
+}
+
+.camera-box {
+  width: 220px;
+  height: 260px;
+  margin: 22px auto;
+  overflow: hidden;
+  border: 2px solid rgba(185, 135, 73, 0.8);
+  border-radius: 20px;
+  background: #000;
+}
+
+.camera-box video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+}
