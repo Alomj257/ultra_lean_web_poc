@@ -95,13 +95,15 @@ export default function JoinScreen({
         {error && <p className="error">{error}</p>}
       </section>
 
-      <Button variant="gold" onClick={() => submit()} disabled={joining}>
-        {joining ? "JOINING..." : "JOIN MISSION"}
-      </Button>
+      <div className="setup-actions">
+        <Button variant="gold" onClick={() => submit()} disabled={joining}>
+          {joining ? "JOINING..." : "JOIN MISSION"}
+        </Button>
 
-      <Button variant="ghost" onClick={onBack}>
-        BACK
-      </Button>
+        <Button variant="ghost" onClick={onBack}>
+          BACK
+        </Button>
+      </div>
 
       <Dots active={2} />
     </PhoneShell>

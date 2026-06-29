@@ -1,542 +1,260 @@
+/* ============================================================
+   THE WALL JOB — globals.css
+   Palette derived from PDF mockups:
+     Dark phone screens  → deep teal/black gradient + gold
+     Light phone screens → pure white + dark ink (Gates 1–3)
+     Tablet screens      → off-white + black mono (terminal)
+     Accent purple       → Gate 3 / Vault Terminal CTA
+   ============================================================ */
+
+/* ---- Google Fonts (loaded via @import so plain CSS works) - */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* ---- Design tokens ---------------------------------------- */
 :root {
-  --gold: #b98749;
-  --teal: #06484c;
-  --purple: #6044d9;
+  /* Brand gold spectrum */
+  --gold-bright:  #d4a84b;
+  --gold:         #b98749;
+  --gold-dark:    #85591f;
+  --gold-muted:   rgba(185, 135, 73, 0.45);
+
+  /* Dark phone palette */
+  --dark-bg-top:    #031416;
+  --dark-bg-mid:    #03100f;
+  --dark-bg-bottom: #020807;
+  --dark-text:      #ead5ae;
+  --dark-text-sub:  #c7a978;
+
+  /* Teal accents */
+  --teal:       #06484c;
+  --teal-mid:   #07575b;
+  --teal-light: #0d777c;
+
+  /* Light phone palette (Gates 1-3) */
+  --light-bg:   #ffffff;
+  --light-text: #111111;
+  --light-sub:  #6b6b6b;
+  --light-border: #dddddd;
+
+  /* Gate 2 accent – teal checkmark/button */
+  --success-teal: #086365;
+
+  /* Gate 3 / Vault purple */
+  --purple:       #6044d9;
+  --purple-light: #8b78e8;
+
+  /* Tablet */
+  --tablet-bg:     #f7f7f7;
+  --tablet-border: #111111;
+  --mono-font: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Typography */
+  --font-display: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  --font-body:    'Inter', Arial, Helvetica, sans-serif;
+
+  /* Spacing / radii */
+  --radius-card:   14px;
+  --radius-btn:    8px;
+  --radius-pill:   999px;
 }
 
-* {
+/* ---- Reset ------------------------------------------------- */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  background: #efefef;
-  color: #111;
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
 }
 
-button,
-input {
+body {
+  background: #efefef;
+  color: var(--light-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input {
   font: inherit;
 }
 
+/* ============================================================
+   PHONE SHELL  (PhoneShell.tsx)
+   ============================================================ */
 .phone {
   width: min(100vw, 390px);
   min-height: 100dvh;
   margin: 0 auto;
   position: relative;
-  padding: 58px 16px 22px;
+  padding: 40px 28px 28px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Dark variant — setup & mission brief screens (PDF p.1, p.5) */
 .phone-dark {
-  color: #ead5ae;
+  color: var(--dark-text);
+  font-family: var(--font-body);
   background:
     radial-gradient(circle at 18% 40%, rgba(170, 104, 40, 0.18), transparent 24%),
     radial-gradient(circle at 85% 16%, rgba(21, 103, 104, 0.24), transparent 24%),
-    linear-gradient(180deg, #031416, #03100f 45%, #020807);
+    linear-gradient(180deg, var(--dark-bg-top), var(--dark-bg-mid) 45%, var(--dark-bg-bottom));
 }
 
+/* Light variant — Gate screens (PDF p.2, p.3, p.4) */
 .phone-light {
-  background: #fff;
-  color: #111;
+  background: var(--light-bg);
+  color: var(--light-text);
   padding-left: 0;
   padding-right: 0;
 }
 
+/* ============================================================
+   BRAND HEADER (shown on dark screens)
+   ============================================================ */
 .brand {
   text-align: center;
   color: var(--gold);
+  font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: 1.8px;
-  font-size: 11px;
-  margin: 10px 0 22px;
+  letter-spacing: 3px;
+  font-size: 12px;
+  margin: 8px 0 20px;
+  text-transform: uppercase;
 }
 
+/* ============================================================
+   SETUP CARD  (shared wrapper for hero / ticket / scan)
+   ============================================================ */
 .setup-card {
-  border: 1px solid rgba(185, 135, 73, 0.48);
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(9, 35, 40, 0.88), rgba(1, 10, 11, 0.92));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  border: 1px solid var(--gold-muted);
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    180deg,
+    rgba(9, 35, 40, 0.88),
+    rgba(1, 10, 11, 0.92)
+  );
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
   text-align: center;
+  flex: 1;
 }
 
+/* ---- Hero (EntryScreen) — "2-PLAYER CREW REQUIRED" -------- */
 .hero-screen {
-  min-height: 340px;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 20px;
+  min-height: 300px;
 }
 
-.hero-screen h1,
-.ticket-screen h1,
-.scan-screen h1 {
+.hero-screen h1 {
   margin: 0;
   color: #f1d6a9;
-  font-size: clamp(28px, 8vw, 36px);
-  line-height: 1.12;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 10vw, 42px);
+  line-height: 1.05;
   font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .mini-line {
   width: 44px;
   height: 1px;
   background: var(--gold);
-  margin: 16px auto;
+  margin: 18px auto;
+  opacity: 0.7;
 }
 
-.hero-screen p,
-.ticket-screen p,
-.scan-screen p {
-  color: #c7a978;
+.hero-screen p {
+  color: var(--dark-text-sub);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---- Ticket (LeadLobbyScreen) — QR + crew code ------------ */
+.ticket-screen {
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.ticket-screen h1 {
+  margin: 0;
+  color: #f1d6a9;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 36px);
+  line-height: 1.1;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.ticket-screen p {
+  color: var(--dark-text-sub);
   font-size: 13px;
   line-height: 1.55;
-}
-
-.setup-actions {
-  display: grid;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.btn {
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  min-height: 56px;
-  width: 100%;
-  padding: 13px 16px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.gold {
-  background: linear-gradient(180deg, #b98749, #85591f);
-  border-color: #d5a864;
-  color: #fff0d7;
-}
-
-.teal {
-  background: #053a3e;
-  border-color: #0d777c;
-  color: #d8ffff;
-}
-
-.ghost {
-  background: transparent;
-  color: #a88652;
-  border-color: rgba(185, 135, 73, 0.45);
-}
-
-.outline,
-.choice {
-  background: #fff;
-  color: #111;
-}
-
-.black {
-  background: #111;
-  border-color: #111;
-  color: #fff;
-}
-
-.purple {
-  background: var(--purple);
-  border-color: var(--purple);
-  color: #fff;
-}
-
-.tealSolid {
-  background: #07575b;
-  border-color: #07575b;
-  color: #fff;
-}
-
-.small {
-  min-height: 44px;
-  font-size: 12px;
-}
-
-.dots {
-  padding-top: 24px;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-}
-
-.dots span {
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  border: 1px solid rgba(185, 135, 73, 0.55);
-}
-
-.dots .active {
-  background: var(--gold);
-}
-
-.ticket-screen {
-  padding: 26px 22px;
+  margin: 4px 0 10px;
 }
 
 .ticket-screen small {
   color: var(--gold);
   display: block;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-top: 8px;
 }
 
 .ticket-screen b {
   color: #f6e2bd;
-  letter-spacing: 1.5px;
-  font-size: 17px;
-}
-
-.qr {
-  width: 154px;
-  height: 154px;
-  margin: 20px auto;
-  background: #fff;
-  padding: 8px;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 3px;
-  border: 1px solid #d6c08e;
-}
-
-.qr.small {
-  width: 142px;
-  height: 142px;
-  border: 2px solid #111;
-}
-
-.qr i {
-  background: #fff;
-}
-
-.qr i.on {
-  background: #111;
-}
-
-.connected-box {
-  margin: 16px 0;
-  padding: 13px;
-  border-radius: 9px;
-  border: 1px solid rgba(185, 135, 73, 0.45);
-  color: #f3ddb7;
-  background: rgba(185, 135, 73, 0.12);
-  font-weight: 800;
-  text-align: center;
-}
-
-.waiting,
-.plain-wait {
-  color: #be9d69;
-  text-align: center;
-  font-size: 13px;
-}
-
-.scan-screen {
-  padding: 28px 18px;
-}
-
-.scan-box {
-  width: 210px;
-  height: 240px;
-  margin: 22px auto;
-  border: 2px solid rgba(185, 135, 73, 0.8);
-  border-radius: 20px;
-}
-
-.crew-input {
-  width: 100%;
-  border: 1px solid rgba(185, 135, 73, 0.55);
-  background: #051315;
-  color: #f0d3a2;
-  border-radius: 8px;
-  padding: 13px;
-  text-align: center;
-  letter-spacing: 2px;
-}
-
-.error {
-  color: #cf3333 !important;
-  font-size: 13px !important;
-}
-
-.role-card-dark,
-.brief-dark {
-  border: 1px solid rgba(185, 135, 73, 0.45);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 18px;
-  margin-bottom: 16px;
-}
-
-.role-badge {
-  background: rgba(185, 135, 73, 0.25);
-  padding: 12px;
-  border-radius: 8px;
-  color: #f4d8a9;
-  font-weight: 900;
-  text-align: center;
-}
-
-.brief-dark h2 {
-  color: var(--gold);
-  font-size: 17px;
-}
-
-.brief-dark ul {
-  color: #e7c99b;
-  line-height: 1.8;
-  font-size: 13px;
-}
-
-.topbar {
-  height: 62px;
-  display: grid;
-  grid-template-columns: 46px 1fr 46px;
-  align-items: center;
-  text-align: center;
-  padding: 0 12px;
-  border-bottom: 1px solid #dadada;
-}
-
-.hamb {
-  text-align: left;
-}
-
-.timer-pill {
-  display: inline-grid;
-  place-items: center;
-  min-width: 32px;
-  min-height: 28px;
-  background: #effaf0;
-  color: #12612b;
-  border: 1px solid #9ad7ad;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.private-copy {
-  min-height: calc(100dvh - 290px);
-  padding: 42px 32px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: pre-line;
-  font-size: clamp(21px, 7vw, 28px);
-  line-height: 1.35;
-  font-weight: 800;
-}
-
-.choices-bottom {
-  padding: 0 16px 22px;
-  display: grid;
-  gap: 14px;
-}
-
-.white-card,
-.result-box {
-  margin: 72px 16px 18px;
-  padding: 24px 16px;
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.checkmark {
-  width: 58px;
-  height: 58px;
-  display: inline-grid;
-  place-items: center;
-  border: 2px solid #086365;
-  color: #086365;
-  border-radius: 50%;
-  font-size: 30px;
-}
-
-.bank-scenario,
-.bank-move {
-  padding: 28px;
-  text-align: center;
-}
-
-.bank-scenario p {
-  font-weight: 800;
-  font-size: 20px;
-}
-
-.bank-move h3 {
-  font-size: clamp(22px, 7vw, 30px);
-}
-
-.lock-panel {
-  margin-top: 28px;
-  border: 1px solid #d5d5d5;
-  border-radius: 10px;
-  padding: 12px;
-}
-
-.lock-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.result-box h2 {
-  font-size: 28px;
-}
-
-.result-box h3 {
-  font-size: 25px;
-}
-
-.result-box hr {
-  border: 0;
-  border-top: 1px solid #ddd;
-  margin: 20px 0;
-}
-
-.note {
-  color: #6b6b6b !important;
-  font-size: 13px;
-}
-
-.key-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.key-row b {
-  font-size: 22px;
-  letter-spacing: 8px;
-}
-
-.complete-box {
-  margin-top: 120px;
-}
-
-.tablet-wrap {
-  min-height: 100dvh;
-  padding: 70px 16px 24px;
-  display: grid;
-  place-items: center;
-  background: #f7f7f7;
-}
-
-.tablet-frame {
-  width: min(100%, 760px);
-  min-height: min(70dvh, 540px);
-  border: clamp(10px, 2.5vw, 22px) solid #111;
-  border-radius: 18px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: clamp(24px, 5vw, 54px);
-  gap: 20px;
-}
-
-.tablet-input {
-  width: min(100%, 280px);
-  border: 1px solid #bdbdbd;
-  border-radius: 8px;
-  padding: 13px;
-  text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   font-size: 18px;
+  font-family: var(--mono-font);
 }
 
-.tablet-btn {
-  max-width: 260px;
-}
-
-.symbol-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-}
-
-.symbol-row button {
-  width: 110px;
-  height: 90px;
-  background: #fff;
-  border: 1px solid #c7c7c7;
-  border-radius: 8px;
-  font-size: 34px;
-  cursor: pointer;
-}
-
-.symbol-row button.picked {
-  background: #111;
-  color: #fff;
-}
-
-.terminal-lines {
-  min-height: 300px;
-  width: min(100%, 420px);
-  text-align: left;
+/* ---- Scan (JoinScreen) — camera viewfinder ---------------- */
+.scan-screen {
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  gap: 6px;
 }
 
-.terminal-lines p {
-  color: #111;
-  font-size: 20px;
-  line-height: 1.7;
+.scan-screen h1 {
+  margin: 0;
+  color: #f1d6a9;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 8vw, 36px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.code-card {
-  border: 1px solid #9d9d9d;
-  border-radius: 8px;
-  padding: 18px 36px;
-  min-width: min(100%, 260px);
+.scan-screen p {
+  color: var(--dark-text-sub);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0 0 6px;
 }
 
-.code-card span {
-  display: block;
-  margin-bottom: 8px;
-}
-
-.code-card b {
-  font-size: clamp(58px, 11vw, 86px);
-  letter-spacing: 4px;
-}
-
-.loader {
-  min-height: 100dvh;
-  display: grid;
-  place-items: center;
-}
-
-.real-qr {
-  width: 220px;
-  height: 220px;
-  background: #fff;
-  padding: 8px;
-  border-radius: 10px;
-  margin: 20px auto;
-  display: block;
-}
-
+/* Camera / QR viewfinder frame */
 .camera-box {
-  width: 220px;
-  height: 260px;
-  margin: 22px auto;
+  width: 210px;
+  height: 250px;
+  margin: 14px auto;
   overflow: hidden;
-  border: 2px solid rgba(185, 135, 73, 0.8);
-  border-radius: 20px;
+  border: 2px solid rgba(185, 135, 73, 0.85);
+  border-radius: 18px;
   background: #000;
+  position: relative;
 }
 
 .camera-box video {
@@ -545,34 +263,713 @@ input {
   object-fit: cover;
 }
 
+/* Manual code input */
+.crew-input {
+  width: 100%;
+  border: 1px solid var(--gold-muted);
+  background: #051315;
+  color: #f0d3a2;
+  border-radius: var(--radius-btn);
+  padding: 13px;
+  text-align: center;
+  letter-spacing: 3px;
+  font-family: var(--mono-font);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.crew-input:focus {
+  border-color: var(--gold);
+}
+
+/* ============================================================
+   SETUP ACTIONS & DOTS  (below cards on dark screens)
+   ============================================================ */
+.setup-actions {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.dots {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  padding: 20px 0 4px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--gold-muted);
+  transition: background 0.2s;
+}
+
+.dots .active {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+/* ============================================================
+   QR CODE  (FakeQR.tsx / RealCrewQR.tsx)
+   ============================================================ */
+.qr {
+  width: 154px;
+  height: 154px;
+  margin: 18px auto;
+  background: #fff;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  border: 1px solid #d6c08e;
+  border-radius: 4px;
+}
+
+.qr.small {
+  width: 142px;
+  height: 142px;
+  border: 2px solid #111;
+}
+
+.qr i { background: #fff; display: block; }
+.qr i.on { background: #111; }
+
+.real-qr {
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  margin: 16px auto;
+  display: block;
+}
+
+/* ============================================================
+   CONNECTED / WAITING STATES
+   ============================================================ */
+.connected-box {
+  margin: 14px 0;
+  padding: 13px;
+  border-radius: 9px;
+  border: 1px solid var(--gold-muted);
+  color: #f3ddb7;
+  background: rgba(185, 135, 73, 0.12);
+  font-weight: 800;
+  font-size: 13px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.waiting,
+.plain-wait {
+  color: #be9d69;
+  text-align: center;
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.error {
+  color: #cf3333 !important;
+  font-size: 13px !important;
+  margin: 6px 0 !important;
+}
+
+/* ============================================================
+   MISSION BRIEF & LOBBY ROLE CARDS  (dark phone screens)
+   ============================================================ */
+.role-card-dark {
+  border: 1px solid var(--gold-muted);
+  border-radius: 12px;
+  background: rgba(6, 72, 76, 0.45);
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.role-badge {
+  background: rgba(6, 72, 76, 0.7);
+  border: 1px solid rgba(13, 119, 124, 0.6);
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: #f4d8a9;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.role-card-dark small {
+  color: var(--dark-text-sub);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 6px;
+}
+
+.brief-dark {
+  border: 1px solid var(--gold-muted);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.brief-dark h2 {
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
+.brief-dark ul {
+  color: #e7c99b;
+  line-height: 2;
+  font-size: 13px;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.brief-dark ul li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.brief-dark ul li::before {
+  content: '—';
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   TOP BAR  (TopBar.tsx — light game screens)
+   ============================================================ */
+.topbar {
+  height: 58px;
+  display: grid;
+  grid-template-columns: 46px 1fr 56px;
+  align-items: center;
+  text-align: center;
+  padding: 0 14px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hamb {
+  text-align: left;
+  color: #444;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Timer pill (green badge — matches mockups) */
+.timer-pill {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  min-height: 28px;
+  padding: 0 6px;
+  background: #effaf0;
+  color: #12612b;
+  border: 1px solid #9ad7ad;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--mono-font);
+}
+
+/* ============================================================
+   PRIVATE MOVE SCREEN  (PrivateMoveScreen.tsx)
+   Ref: PDF p.2 "Private Moves" — white, large centered text
+   ============================================================ */
+.private-copy {
+  flex: 1;
+  padding: 44px 32px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.private-copy p {
+  margin: 0;
+  white-space: pre-line;
+  font-size: clamp(21px, 6.5vw, 28px);
+  line-height: 1.38;
+  font-weight: 700;
+  color: var(--light-text);
+}
+
+.choices-bottom {
+  padding: 0 16px 24px;
+  display: grid;
+  gap: 12px;
+}
+
+/* ============================================================
+   BANK ALERT SCREEN  (BankAlertScreen.tsx)
+   Ref: PDF p.2 / p.3 "Bank Alert" — white phone, bold header
+   ============================================================ */
+.bank-scenario {
+  padding: 28px 28px 0;
+  text-align: center;
+  border-bottom: 1px solid var(--light-border);
+  padding-bottom: 22px;
+}
+
+.bank-scenario h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: var(--light-text);
+}
+
+.bank-scenario p {
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.4;
+  margin: 0;
+  color: var(--light-text);
+}
+
+.bank-move {
+  padding: 22px 28px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.bank-move > span {
+  font-size: 13px;
+  color: var(--light-sub);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.bank-move h3 {
+  font-size: clamp(22px, 7vw, 30px);
+  font-weight: 800;
+  margin: 0 0 14px;
+  line-height: 1.2;
+  color: var(--light-text);
+}
+
+.bank-move p {
+  font-size: 13px;
+  color: var(--light-sub);
+  margin: 0 0 8px;
+}
+
+/* Lock panel — "Lock Crew Move" box */
+.lock-panel {
+  margin-top: 20px;
+  border: 1px solid var(--light-border);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.lock-panel b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: var(--light-text);
+}
+
+.lock-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ============================================================
+   GATE RESULT SCREEN  (GateResultScreen.tsx)
+   Ref: PDF p.2 "Gate 1 Complete", p.3 "Gate 2 Complete"
+   White card, check circle, narrative lines
+   ============================================================ */
+.white-card,
+.result-box {
+  margin: 60px 16px 18px;
+  padding: 28px 20px 24px;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-card);
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  background: #fff;
+}
+
+.wait-card {
+  margin-top: 60px;
+}
+
+/* Checkmark circle */
+.checkmark {
+  width: 58px;
+  height: 58px;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid var(--success-teal);
+  color: var(--success-teal);
+  border-radius: 50%;
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+
+.result-box h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--light-text);
+}
+
+.result-box h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: var(--light-text);
+}
+
+.result-box p {
+  font-size: 14px;
+  color: var(--light-sub);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+
+.result-box hr {
+  border: 0;
+  border-top: 1px solid var(--light-border);
+  margin: 18px 0;
+}
+
+.note {
+  color: var(--light-sub) !important;
+  font-size: 13px !important;
+}
+
+/* Key Signature row */
+.key-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+}
+
+.key-row span {
+  font-size: 13px;
+  color: var(--light-sub);
+}
+
+.key-row b {
+  font-size: 20px;
+  letter-spacing: 8px;
+  font-family: var(--mono-font);
+  color: var(--light-text);
+}
+
+/* "Go to Vault Terminal" / "Next Gate" button container */
+.complete-box {
+  margin-top: 80px;
+}
+
+/* ============================================================
+   BUTTONS  (Button.tsx — shared across all screens)
+   ============================================================ */
+.btn {
+  border-radius: var(--radius-btn);
+  min-height: 56px;
+  width: 100%;
+  padding: 13px 18px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* Gold — primary CTA on dark screens (CREATE CREW, BEGIN…) */
+.gold {
+  background: linear-gradient(180deg, var(--gold-bright), var(--gold-dark));
+  border-color: #d5a864;
+  color: #fff0d7;
+  box-shadow: 0 2px 10px rgba(185, 135, 73, 0.35);
+}
+
+/* Teal — JOIN CREW */
+.teal {
+  background: var(--teal);
+  border-color: var(--teal-light);
+  color: #d8ffff;
+}
+
+/* Ghost — back / secondary links on dark screens */
+.ghost {
+  background: transparent;
+  color: #a88652;
+  border-color: var(--gold-muted);
+}
+
+/* Outline / Choice — Gate choice buttons (white, border) */
+.outline,
+.choice {
+  background: #fff;
+  color: var(--light-text);
+  border-color: #c0c0c0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+}
+
+/* Black — "My Move", "Next Gate", "Begin Activation" */
+.black {
+  background: var(--light-text);
+  border-color: var(--light-text);
+  color: #fff;
+}
+
+/* Purple — Gate 3 "Go to Vault Terminal" */
+.purple {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(96, 68, 217, 0.4);
+}
+
+/* Teal Solid — Gate 2 "Next Gate" */
+.tealSolid {
+  background: var(--teal-mid);
+  border-color: var(--teal-mid);
+  color: #fff;
+}
+
+/* Small variant */
+.small {
+  min-height: 44px;
+  font-size: 13px;
+  padding: 10px 14px;
+}
+
+/* ============================================================
+   TABLET SHELL  (TabletShell.tsx + VaultTerminal.tsx)
+   Ref: PDF p.5 (Vault Terminal idle + key signature)
+        PDF p.6 (Suspense sequence)
+        PDF p.7 (Success path)
+        PDF p.8 (Near unlock)
+   ============================================================ */
+.tablet-wrap {
+  min-height: 100dvh;
+  padding: 48px 16px 24px;
+  display: grid;
+  place-items: center;
+  background: var(--tablet-bg);
+}
+
+.tablet-frame {
+  width: min(100%, 780px);
+  min-height: min(72dvh, 560px);
+  border: clamp(10px, 2.5vw, 22px) solid var(--tablet-border);
+  border-radius: 20px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(28px, 5vw, 56px);
+  gap: 18px;
+}
+
+.tablet-frame h1 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  color: var(--light-text);
+  line-height: 1.15;
+}
+
+.tablet-frame h2 {
+  margin: 0;
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 800;
+  color: var(--light-text);
+}
+
+.tablet-frame p {
+  margin: 0;
+  color: var(--light-sub);
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+/* Crew code input (idle screen) */
+.tablet-input {
+  width: min(100%, 280px);
+  border: 1px solid #bdbdbd;
+  border-radius: var(--radius-btn);
+  padding: 14px;
+  text-align: center;
+  letter-spacing: 3px;
+  font-size: 18px;
+  font-family: var(--mono-font);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.tablet-input:focus {
+  border-color: var(--light-text);
+}
+
+/* Button size cap for tablet */
+.tablet-btn {
+  max-width: 280px;
+}
+
+/* Key Signature symbol buttons ([ ◆ ] [ ● ] [ ▲ ]) */
+.symbol-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+.symbol-row button {
+  width: 120px;
+  height: 96px;
+  background: #fff;
+  border: 1px solid #c7c7c7;
+  border-radius: var(--radius-btn);
+  font-size: 28px;
+  cursor: pointer;
+  font-family: var(--mono-font);
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.symbol-row button:hover {
+  border-color: #888;
+}
+
+.symbol-row button.picked {
+  background: var(--light-text);
+  color: #fff;
+  border-color: var(--light-text);
+}
+
+/* ---- Vault Terminal suspense sequence --------------------- */
+.terminal-lines {
+  min-height: 280px;
+  width: min(100%, 440px);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+}
+
+.terminal-lines p {
+  color: var(--light-text);
+  font-size: clamp(16px, 2.2vw, 20px);
+  line-height: 1.85;
+  margin: 0;
+  font-family: var(--mono-font);
+
+  /* Typewriter reveal */
+  animation: fadein 0.25s ease both;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Vault code card (success) ---------------------------- */
+.code-card {
+  border: 1px solid #9d9d9d;
+  border-radius: var(--radius-btn);
+  padding: 20px 40px;
+  min-width: min(100%, 260px);
+  text-align: center;
+}
+
+.code-card span {
+  display: block;
+  font-size: 14px;
+  color: var(--light-sub);
+  margin-bottom: 6px;
+}
+
+.code-card b {
+  font-size: clamp(58px, 10vw, 86px);
+  font-weight: 800;
+  letter-spacing: 6px;
+  font-family: var(--font-body);
+  color: var(--light-text);
+  display: block;
+}
+
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+.loader {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  color: var(--light-sub);
+}
+
+/* ============================================================
+   TEST / ADMIN CONSOLE  (test-console page)
+   ============================================================ */
 .test-console-light {
   min-height: 100dvh;
   background: #f7f7f8;
   color: #111827;
   padding: 28px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }
 
 .console-panel,
 .console-result-light {
   max-width: 980px;
   margin: 0 auto 20px;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: var(--radius-card);
+  padding: 22px;
 }
 
-.console-panel h1 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.console-panel p {
-  margin: 6px 0 18px;
-  color: #6b7280;
-  font-size: 14px;
-}
+.console-panel h1 { margin: 0; font-size: 26px; }
+.console-panel p  { margin: 6px 0 18px; color: #6b7280; font-size: 14px; }
 
 .console-form {
   display: flex;
@@ -595,7 +992,7 @@ input {
   border: 1px solid #d1d5db;
   border-radius: 10px;
   padding: 0 14px;
-  background: #ffffff;
+  background: #fff;
   color: #111827;
   cursor: pointer;
   font-weight: 600;
@@ -603,7 +1000,7 @@ input {
 
 .console-form button {
   background: #111827;
-  color: #ffffff;
+  color: #fff;
   border-color: #111827;
 }
 
@@ -615,15 +1012,9 @@ input {
 }
 
 .console-actions button:hover,
-.console-form button:hover {
-  opacity: 0.85;
-}
-
+.console-form button:hover { opacity: 0.85; }
 .console-actions button:disabled,
-.console-form button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+.console-form button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .console-message-light {
   margin-top: 14px;
@@ -642,16 +1033,8 @@ input {
   margin-bottom: 18px;
 }
 
-.result-header h2 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.result-header p {
-  margin: 4px 0 0;
-  color: #6b7280;
-  letter-spacing: 1px;
-}
+.result-header h2 { margin: 0; font-size: 22px; }
+.result-header p  { margin: 4px 0 0; color: #6b7280; letter-spacing: 1px; }
 
 .badge {
   display: inline-flex;
@@ -659,26 +1042,15 @@ input {
   justify-content: center;
   min-height: 30px;
   padding: 0 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
 }
 
-.badge.success {
-  background: #ecfdf5;
-  color: #047857;
-}
-
-.badge.warning {
-  background: #fffbeb;
-  color: #b45309;
-}
-
-.badge.neutral {
-  background: #f3f4f6;
-  color: #4b5563;
-}
+.badge.success { background: #ecfdf5; color: #047857; }
+.badge.warning { background: #fffbeb; color: #b45309; }
+.badge.neutral { background: #f3f4f6; color: #4b5563; }
 
 .summary-grid {
   display: grid;
@@ -701,15 +1073,9 @@ input {
   margin-bottom: 6px;
 }
 
-.summary-grid b {
-  font-size: 15px;
-  word-break: break-word;
-}
+.summary-grid b { font-size: 15px; word-break: break-word; }
 
-.console-result-light h3 {
-  margin: 20px 0 10px;
-  font-size: 16px;
-}
+.console-result-light h3 { margin: 20px 0 10px; font-size: 16px; }
 
 .table-wrap {
   width: 100%;
@@ -718,11 +1084,7 @@ input {
   border-radius: 12px;
 }
 
-.table-wrap table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
+.table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
 
 .table-wrap th,
 .table-wrap td {
@@ -739,9 +1101,7 @@ input {
   text-transform: uppercase;
 }
 
-.table-wrap tr:last-child td {
-  border-bottom: 0;
-}
+.table-wrap tr:last-child td { border-bottom: 0; }
 
 .console-result-light pre {
   max-height: 320px;
@@ -756,25 +1116,26 @@ input {
   line-height: 1.5;
 }
 
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 @media (max-width: 700px) {
-  .test-console-light {
-    padding: 14px;
-  }
+  .test-console-light   { padding: 14px; }
+  .console-form         { flex-direction: column; }
+  .console-actions      { display: grid; grid-template-columns: 1fr; }
+  .summary-grid         { grid-template-columns: 1fr; }
+  .result-header        { flex-direction: column; }
+}
 
-  .console-form {
-    flex-direction: column;
-  }
+@media (max-width: 480px) {
+  .symbol-row button { width: 90px; height: 78px; font-size: 22px; }
+  .lock-grid         { grid-template-columns: 1fr; }
+}
 
-  .console-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .summary-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .result-header {
-    flex-direction: column;
-  }
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-lines p { animation: none; }
+  .btn              { transition: none; }
 }
