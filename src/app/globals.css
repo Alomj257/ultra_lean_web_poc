@@ -188,7 +188,7 @@ button, input {
 }
 
 .scan-screen {
-  padding: 28px 20px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,6 +227,11 @@ button, input {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover;
+}
+
+.camera-box svg path,
+.camera-box svg rect {
+  stroke: #22c55e !important;
 }
 
 .crew-input {
