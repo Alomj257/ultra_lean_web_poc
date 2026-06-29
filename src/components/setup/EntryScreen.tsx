@@ -7,9 +7,11 @@ import PhoneShell from "@/components/layout/PhoneShell";
 export default function EntryScreen({
   onCreateCrew,
   onJoinCrew,
+  creating = false,
 }: {
   onCreateCrew: () => void;
   onJoinCrew: () => void;
+  creating?: boolean;
 }) {
   return (
     <PhoneShell dark>
@@ -21,7 +23,9 @@ export default function EntryScreen({
           <br />
           CREW REQUIRED
         </h1>
+
         <div className="mini-line" />
+
         <p>
           No solo runs.
           <br />
@@ -30,10 +34,19 @@ export default function EntryScreen({
       </section>
 
       <div className="setup-actions">
-        <Button variant="gold" onClick={onCreateCrew}>
-          CREATE CREW
+        <Button
+          variant="gold"
+          onClick={onCreateCrew}
+          disabled={creating}
+        >
+          {creating ? "CREATING..." : "CREATE CREW"}
         </Button>
-        <Button variant="teal" onClick={onJoinCrew}>
+
+        <Button
+          variant="teal"
+          onClick={onJoinCrew}
+          disabled={creating}
+        >
           JOIN CREW
         </Button>
       </div>

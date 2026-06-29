@@ -14,6 +14,7 @@ export default function HomePage() {
   const [view, setView] = useState<View>("entry");
   const [crewCode, setCrewCode] = useState("");
   const [role, setRole] = useState<Role | null>(null);
+  const [creating, setCreating] = useState(false);
 
   const { session } = useFirebaseSession(crewCode);
 
@@ -29,10 +30,12 @@ export default function HomePage() {
   }, []);
 
   async function createCrew() {
-    try {
-      const code = generateCode();
+    if (creating) return;
 
-      console.log("Creating crew:", code);
+    try {
+      setCreating(true);
+
+      const code = generateCode();
 
       await createSession(code);
 
@@ -40,8 +43,10 @@ export default function HomePage() {
       setRole("lead");
       setView("game");
     } catch (error) {
-      console.error("Create crew error:", error);
-      alert(error instanceof Error ? error.message : "Firebase error");
+      console.error(error);
+      alert("Unable to create crew.");
+    } finally {
+      setCreating(false);
     }
   }
 
@@ -58,6 +63,7 @@ export default function HomePage() {
       <EntryScreen
         onCreateCrew={createCrew}
         onJoinCrew={() => setView("join")}
+        creating={creating}
       />
     );
   }

@@ -69,12 +69,14 @@ export default function GateResultScreen({
       </section>
 
       {isLead ? (
+        <div style={{padding: "10px 20px"}}>
         <Button
           variant={isLast ? "purple" : gate.id === 2 ? "tealSolid" : "black"}
           onClick={next}
         >
           {isLast ? "Go to Vault Terminal" : "Next Gate"}
         </Button>
+        </div>
       ) : (
         <p className="plain-wait">Waiting for Crew Lead...</p>
       )}
